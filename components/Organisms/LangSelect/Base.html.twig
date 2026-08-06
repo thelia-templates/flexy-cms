@@ -5,6 +5,19 @@
 {% if currentLang %}
     {% set langs = this.langs %}
 
+    {# Where the page being read lives in each language. Switching language has
+       to keep the visitor on their page: sending them to the home page loses it.
+       A language the page has no version in keeps the home page as its target,
+       which is a fallback, not a destination we advertise to crawlers. #}
+    {% set alternates = {} %}
+    {% for alternate in cms_page_alternates() %}
+        {% set alternates = alternates|merge({ (alternate.locale): alternate.url }) %}
+    {% endfor %}
+    {# `url_site` is empty on a shop that never set it: '/' keeps the fallback
+       from turning into a link to the current page in a language it has no
+       version in. #}
+    {% set homeOf = attr('config', 'url_site')|default('') ?: '/' %}
+
     <div
         class="{{ ('LangSelect ' ~ attributes.render('class'))|tailwind_merge }}"
         {{ attributes.defaults({...stimulus_controller('Organisms--LangSelect--base')}).without('class') }}
@@ -27,7 +40,7 @@
                 {% for lang in langs %}
                     <li>
                         <a
-                            href="{{ attr('config', 'url_site') ~ '?' ~ { lang: lang.locale }|url_encode }}"
+                            href="{{ alternates[lang.locale]|default(homeOf ~ '?' ~ { lang: lang.locale }|url_encode) }}"
                             class="LangSelect-lang{% if currentLang.code == lang.code %} active{% endif %}"
                         >
                             {{ ux_icon('flags:' ~ lang.code, { class: 'LangSelect-flag' }) }}
@@ -64,7 +77,7 @@
                 {% for lang in langs %}
                     <li>
                         <a
-                            href="{{ attr('config', 'url_site') ~ '?' ~ { lang: lang.locale }|url_encode }}"
+                            href="{{ alternates[lang.locale]|default(homeOf ~ '?' ~ { lang: lang.locale }|url_encode) }}"
                             class="LangSelect-mobileItem{% if currentLang.code == lang.code %} active{% endif %}"
                         >
                             {{ ux_icon('flags:' ~ lang.code, { class: 'LangSelect-flag' }) }}

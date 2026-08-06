@@ -35,13 +35,21 @@
             </div>
             <twig:Molecules:Button:Base href="/contact" text="{{ 'Contact Us'|trans }}" color="secondary" size="large" icon_right="email" />
         </div>
+        {# The footer links come from the CMS menu called `footer` as soon as it
+           holds anything, so the site owner decides what is down here. With an
+           empty menu, the information folder keeps filling it as before. #}
+        {% set footerMenu = cms_menu('footer') %}
         <ul class="Footer-links">
-            {% set contents = resources('/api/front/contents', {'contentFolders.folder.id': attr('config', 'information_folder_id')}) %}
-            {% for content in contents %}
-                <li class="paragraph-5">
-                    <a href="{{ content.publicUrl }}" class="Footer-link">{{ content.i18ns.title }}</a>
-                </li>
-            {% endfor %}
+            {% if footerMenu is not empty %}
+                {{ _self.cms_menu_branch(footerMenu) }}
+            {% else %}
+                {% set contents = resources('/api/front/contents', {'contentFolders.folder.id': attr('config', 'information_folder_id')}) %}
+                {% for content in contents %}
+                    <li class="paragraph-5">
+                        <a href="{{ content.publicUrl }}" class="Footer-link">{{ content.i18ns.title }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 
@@ -62,3 +70,22 @@
         </div>
     </div>
 </footer>
+
+{# One entry, then its children: the shape `cms_menu()` returns is a plain tree,
+   so a theme decides its own markup. An entry with no url is a heading. #}
+{% macro cms_menu_branch(entries) %}
+    {% for entry in entries %}
+        <li class="paragraph-5">
+            {% if entry.url %}
+                <a href="{{ entry.url }}" class="Footer-link{{ entry.active ? ' is-active' : '' }}"
+                   {%- if entry.blank %} target="_blank" rel="noopener"{% endif %}>{{ entry.label }}</a>
+            {% else %}
+                <span class="Footer-link">{{ entry.label }}</span>
+            {% endif %}
+
+            {% if entry.children is not empty %}
+                <ul class="Footer-sublinks">{{ _self.cms_menu_branch(entry.children) }}</ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
