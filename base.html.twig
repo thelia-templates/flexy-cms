@@ -4,24 +4,21 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>
-            {% block title %}
-                {{ SEOnePageTitle() }}
-            {% endblock %}
-        </title>
-        <meta name="description" content="{% block meta_desc %}{{ SEOnePageDesc() }}{% endblock %}">
-        <link rel="canonical" href="{{ SEOnePageCanonical() }}"/>
-        {% block breadcrumb_json %}
-            {{ SEOneBreadcrumbJsonLd(breadcrumb)|raw }}
-        {% endblock %}
+
+        {{ theme_hook('layout.head.top', {
+            breadcrumb,
+            title:       block('title') is defined ? block('title')|trim : null,
+            description: block('meta_desc') is defined ? block('meta_desc')|trim : null,
+            og_type:     block('og_type') is defined ? block('og_type')|trim : null,
+        }) }}
+
+        {% block robots %}{% endblock %}
+
         <link rel="icon" type="image/png" href="{{ asset('favicons/favicon-96x96.png') }}" sizes="96x96"/>
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicons/favicon.svg') }}"/>
         <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png') }}"/>
         <link rel="manifest" href="{{ asset('favicons/site.webmanifest') }}"/>
-        {% block hreflang %}
-            {{ SEOneHreflang()|raw }}
-        {% endblock %}
 
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
@@ -33,21 +30,29 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+
+        {{ theme_hook('layout.head.bottom', {breadcrumb}) }}
+        {% block structured_data %}{% endblock %}
     </head>
 
     <body class="no-js {% block body_class %}{% endblock %}">
+
+        {{ theme_hook('layout.body.top') }}
         {% block header %}
             <twig:Layouts:Header:Base />
         {% endblock %}
+        {{ theme_hook('layout.header.bottom') }}
 
         <main {% block stimulus_controller %}{% endblock %}>
             {% block body %}{% endblock %}
         </main>
 
+        {{ theme_hook('layout.footer.top') }}
         {% block footer %}
             <twig:Layouts:Footer:Base />
         {% endblock %}
 
         {% block modals %}{% endblock %}
+        {{ theme_hook('layout.body.bottom') }}
     </body>
 </html>
