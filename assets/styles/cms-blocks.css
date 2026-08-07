@@ -608,3 +608,174 @@
   margin: 0;
   font-size: 0.9375rem;
 }
+
+/* Forms ------------------------------------------------------------------- */
+
+.cms-form {
+  /* Narrower than the other blocks: a line of a form is read one field at a
+     time, and a text input the width of the page is uncomfortable to scan. */
+  --cms-block-inline: min(45rem, 100% - 2rem);
+
+  margin-inline: auto;
+  width: var(--cms-block-inline);
+  /* Sending a form scrolls back to it by its anchor, and the header is sticky:
+     without this the first thing the browser lands on — the sentence saying
+     what went wrong — is hidden underneath it. */
+  scroll-margin-top: 6rem;
+}
+
+.cms-form__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.cms-form__intro {
+  margin: 0 0 1.5rem;
+}
+
+.cms-form__required-hint {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  color: var(--color-grey-darker);
+}
+
+.cms-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cms-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.cms-form__label,
+.cms-form__legend {
+  font-weight: 600;
+}
+
+.cms-form__input {
+  width: 100%;
+  /* 44 pixels tall at the default font size: comfortably past the 24 by 24
+     minimum, and the size a thumb actually hits on a phone. */
+  padding: 0.75rem;
+  border: 1px solid var(--color-grey);
+  border-radius: 0.5rem;
+  background: var(--color-white);
+  color: var(--color-black);
+  font: inherit;
+}
+
+.cms-form__input:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+/* The red border alone would carry the message by colour only, so an invalid
+   field also gets its message in text underneath. */
+.cms-form__field.has-error .cms-form__input {
+  border-color: var(--color-error);
+}
+
+textarea.cms-form__input {
+  resize: vertical;
+}
+
+/* A tick box and its wording form one target: the whole line is clickable,
+   which is both easier to hit and what a label is for. */
+.cms-form__tick {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+.cms-form__tick input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  accent-color: var(--color-black);
+}
+
+.cms-form__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cms-form__legend {
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+.cms-form__help {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-grey-darker);
+}
+
+.cms-form__error {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-error);
+}
+
+.cms-form__error-summary,
+.cms-form__refused {
+  margin: 0 0 1.5rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-grey-lightest);
+  border-inline-start: 4px solid var(--color-error);
+  font-weight: 600;
+}
+
+.cms-form__sent {
+  margin: 0;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--color-grey-lightest);
+  border-inline-start: 4px solid var(--color-base);
+  font-weight: 600;
+}
+
+.cms-form__legal {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-grey-darker);
+}
+
+.cms-form__legal-link {
+  color: inherit;
+}
+
+.cms-form__submit {
+  align-self: flex-start;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-base);
+  /* Black on the brand orange clears 4.5:1; white on it does not. */
+  color: var(--color-black);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cms-form__submit:hover,
+.cms-form__submit:focus-visible {
+  background: var(--color-dark);
+}
+
+.cms-form__submit:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
