@@ -10,7 +10,10 @@
     <div class="Header-top">
         <div class="flex">
             <div class="flex items-center self-center h-full">
-                <a href="/" class="Header-logo">
+                {# The logo is a picture with no text, so the link needs a name
+                   of its own: without it a screen reader announces "link" and
+                   nothing else, which is the first thing on every page. #}
+                <a href="/" class="Header-logo" aria-label="{{ 'Home'|trans }}">
                     {{ ux_icon('thelia') }}
                 </a>
             </div>

@@ -67,7 +67,9 @@
             <div class="Footer-icon">{{ ux_icon('linkedin') }}</div>
             <div class="Footer-icon">{{ ux_icon('tiktok') }}</div>
         </div>
-        <div class="Footer-copyright text-grey indication indication-small">
+        {# grey-dark rather than grey: at 12px on the footer background, grey
+           reaches 4.2:1, under the 4.5:1 that small text has to hold. #}
+        <div class="Footer-copyright text-grey-dark indication indication-small">
             © <a href="https://www.openstudio.fr/">OpenStudio</a> - {{ 'now'|date('Y') }}
         </div>
     </div>
