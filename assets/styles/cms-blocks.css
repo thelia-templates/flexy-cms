@@ -115,6 +115,16 @@
   color: var(--color-grey-darker);
 }
 
+/* A link an author typed into their text carries no class, and the reset leaves
+   it the colour of the text around it with no underline: nothing at all says it
+   is a link. Underlined rather than coloured, because colour on its own is not
+   a distinction either (WCAG 1.4.1). Links the catalogue renders itself have
+   classes and keep their own look. */
+:where(.cms-page__content, .cms-page-content) a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* Buttons and links ------------------------------------------------------- */
 
 .cms-button {
