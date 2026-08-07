@@ -14,13 +14,27 @@
 
         {% block robots %}{% endblock %}
 
-        <link rel="icon" type="image/png" href="{{ asset('favicons/favicon-96x96.png') }}" sizes="96x96"/>
-        <link rel="icon" type="image/svg+xml" href="{{ asset('favicons/favicon.svg') }}"/>
-        <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png') }}"/>
+        {# The icon uploaded in Configuration > Store, when there is one, so a
+           client changes it without touching the theme. #}
+        {% set site_icon = cms_site_icon() %}
+        {% if site_icon %}
+            <link rel="icon" href="{{ site_icon }}"/>
+            <link rel="apple-touch-icon" href="{{ site_icon }}"/>
+        {% else %}
+            <link rel="icon" type="image/png" href="{{ asset('favicons/favicon-96x96.png') }}" sizes="96x96"/>
+            <link rel="icon" type="image/svg+xml" href="{{ asset('favicons/favicon.svg') }}"/>
+            <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+            <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png') }}"/>
+        {% endif %}
         <link rel="manifest" href="{{ asset('favicons/site.webmanifest') }}"/>
 
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        {# The two faces every page starts with, fetched alongside the
+           stylesheet instead of after it. The rest of the family follows from
+           fonts.css, which is served by this site: asking Google for them would
+           hand the address of every visitor to a third party before they have
+           agreed to anything. #}
+        <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/poppins-400-normal-latin.woff2') }}" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/poppins-600-normal-latin.woff2') }}" crossorigin>
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}" blocking="render">
@@ -37,13 +51,18 @@
 
     <body class="no-js {% block body_class %}{% endblock %}">
 
+        {# First thing in the tab order: somebody navigating with a keyboard
+           reaches the content without walking through the whole menu. It is
+           off-screen until focused. #}
+        <a class="skip-link" href="#main-content">{{ 'Skip to content'|trans }}</a>
+
         {{ theme_hook('layout.body.top') }}
         {% block header %}
             <twig:Layouts:Header:Base />
         {% endblock %}
         {{ theme_hook('layout.header.bottom') }}
 
-        <main {% block stimulus_controller %}{% endblock %}>
+        <main id="main-content" tabindex="-1" {% block stimulus_controller %}{% endblock %}>
             {% block body %}{% endblock %}
         </main>
 

@@ -11,11 +11,13 @@
 @source "../../blocks";
 
 /* Theme and utilities : automatic layering / per file layering */
+@import "./fonts.css";
 @import "./variables.css";
 @import "./layout.css";
 /* Blocks of the TheliaCMS catalogue: the module ships the markup, the theme
    owns what it looks like. */
 @import "./cms-blocks.css";
+@import "./cms-search.css";
 @import "../../components/Atoms/Typography/Typography.css";
 
 /* Components managing their own layering internally (@theme / @utility / @layer) : imported unwrapped, the file is the sole source of truth for its own layer */
