@@ -18,6 +18,16 @@
  * page (SPEC §3.5).
  */
 
+/* The design system hangs `.Breadcrumb` in the corner of a Subheader, with
+   `position: absolute`. A CMS page has no Subheader — its own content carries
+   the title — so the breadcrumb had nothing to be positioned against and landed
+   under the sticky header, present in the markup and invisible on screen. Back
+   into the flow, and lined up with the content below it. */
+.cms-page__breadcrumb .Breadcrumb {
+  position: static;
+  padding-block: 1.5rem 0;
+}
+
 /* Both names: the module renders `cms-page__content`, and the class was
    written `cms-page-content` here first. */
 :is(.cms-page__content, .cms-page-content) {

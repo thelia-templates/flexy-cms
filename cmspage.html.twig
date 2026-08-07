@@ -50,7 +50,9 @@
        would give the page two `h1`, which is exactly what the heading check
        warns about at publication. #}
     {% if layout == 'default' %}
-        <twig:Molecules:Breadcrumb:Base :items="breadcrumb" class="container-l" />
+        <div class="cms-page__breadcrumb container-l">
+            <twig:Molecules:Breadcrumb:Base :items="breadcrumb" />
+        </div>
     {% endif %}
 
     <article class="cms-page__content">
