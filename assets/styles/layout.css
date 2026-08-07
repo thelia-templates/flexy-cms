@@ -197,3 +197,53 @@
     max-width: var(--container-double-3-col-a-xl);
   }
 }
+
+/* The keyboard shell of the site.
+
+   Three rules that only ever show up for somebody not using a mouse, and that
+   are the difference between a site that can be navigated with a keyboard and
+   one that cannot. */
+
+.skip-link {
+  /* Fixed rather than absolute: an absolute one sits at the top of the
+     document, so a visitor who tabs after scrolling focuses a link they cannot
+     see. */
+  position: fixed;
+  left: --spacing(4);
+  /* Off-screen rather than display:none: a hidden element is skipped by the
+     tab order entirely, which is the opposite of what this is for. */
+  top: -6rem;
+  z-index: 100;
+  padding: --spacing(3) --spacing(5);
+  background-color: var(--color-white);
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+  border-radius: var(--radius-md);
+  /* Explicitly none: the link has to be on screen the instant it takes focus,
+     and an inherited transition would animate it into place, which a browser
+     does not do at all in a backgrounded tab. */
+  transition: none;
+}
+
+.skip-link:focus {
+  top: --spacing(4);
+}
+
+/* A focus ring nothing can turn off by accident, on every interactive element
+   that has not styled its own. */
+:where(a, button, [role="button"], summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+/* The header is sticky, so an anchor lands under it unless the target keeps
+   room above itself. */
+:where(h1, h2, h3, h4, h5, h6, [id]) {
+  scroll-margin-top: 6rem;
+}
+
+/* Focusing <main> through the skip link must not draw a ring around the whole
+   page: it is a target, not a control. */
+main:focus {
+  outline: none;
+}

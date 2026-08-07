@@ -39,6 +39,7 @@
            holds anything, so the site owner decides what is down here. With an
            empty menu, the information folder keeps filling it as before. #}
         {% set footerMenu = cms_menu('footer') %}
+        <nav aria-label="{{ 'Footer menu'|trans }}">
         <ul class="Footer-links">
             {% if footerMenu is not empty %}
                 {{ _self.cms_menu_branch(footerMenu) }}
@@ -51,6 +52,7 @@
                 {% endfor %}
             {% endif %}
         </ul>
+        </nav>
     </div>
 
     <hr class="h-px text-grey-lighter hidden md:block">

@@ -16,7 +16,9 @@
             </div>
         </div>
 
-        <nav id="Menu" class="Header-menu" {{ stimulus_target(headerController, 'panel') }} data-header-panel-id="menu">
+        {# Named, because a page has more than one nav and a screen reader
+           announces them by their label. #}
+        <nav id="Menu" class="Header-menu" aria-label="{{ 'Main menu'|trans }}" {{ stimulus_target(headerController, 'panel') }} data-header-panel-id="menu">
             <twig:Molecules:Button:Base
                 icon_left="chevron-left"
                 size="small"
