@@ -36,7 +36,7 @@
         }
     },
     "extra": {
-        "installer-name": "flexy",
+        "installer-name": "flexy-cms",
         "branch-alias": {
             "dev-twig": "0.2.x-dev"
         }
