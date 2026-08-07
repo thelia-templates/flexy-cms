@@ -50,6 +50,17 @@
   margin-inline: auto;
 }
 
+/* A picture is a direct child too, and a width set on it stretches it to the
+   whole reading column: an icon with no width and height attributes, which is
+   what an SVG imported from another site usually is, came out 768 pixels wide.
+   Its own size, capped by the column. */
+:is(.cms-page__content, .cms-page-content):not(:has(> [class*="cms-"]))
+  > :is(img, svg, video, picture, iframe) {
+  width: auto;
+  max-width: min(48rem, 100% - 2rem);
+  height: auto;
+}
+
 /* Headings written straight into the content carry no class, and the reset
    leaves them the size of body text. The scale of the theme is applied by hand
    here rather than through @apply, which would pull a utility into a file the
