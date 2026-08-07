@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% set childFolders = resources('/api/front/folders', {parent: attr('folder', 'id')}) %}
+    {% set childFolders = resources('/api/front/folders', {parent: attr('folder', 'id'), 'order[position]': 'asc'}) %}
     {% set ps = attr('folder', 'postscriptum') %}
 
     <twig:Layouts:Subheader:Item

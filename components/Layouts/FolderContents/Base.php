@@ -34,6 +34,10 @@ class Base
     {
         $response = $this->dataAccessService->resources('/api/front/contents', [
             'contentFolders.folder.id' => $folderId,
+            // Sans tri demandé, la collection sort dans l'ordre des clés
+            // primaires : la liste d'un dossier ignore alors l'ordre décidé en
+            // back-office et s'ouvre sur son contenu le plus ancien.
+            'order[position]' => 'asc',
             'itemsPerPage' => self::ITEMS_PER_PAGE,
             'page' => $page,
         ], 'jsonld');
