@@ -486,3 +486,125 @@
     transition: none;
   }
 }
+
+/* Click-to-load embeds ---------------------------------------------------- */
+
+.cms-facade {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--color-grey-lightest);
+}
+
+.cms-facade__action {
+  display: block;
+  position: relative;
+  min-height: 12rem;
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.cms-facade__poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* The label sits over the poster when there is one, and fills the card when
+   there is not. */
+.cms-facade__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  /* Solid by default: white on a translucent layer over the light card ends up
+     at 3.9:1, which is not a contrast ratio. Only a poster underneath makes the
+     translucent version safe, and even then it is dark enough to carry text. */
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.cms-facade__action:has(.cms-facade__poster) .cms-facade__label {
+  background: rgb(40 40 40 / 65%);
+}
+
+.cms-facade__icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: var(--color-base);
+  color: var(--color-black);
+  font-size: 1.25rem;
+}
+
+.cms-facade__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cms-facade__title {
+  font-size: 1.125rem;
+}
+
+.cms-facade__summary,
+.cms-facade__cta {
+  font-size: 0.9375rem;
+}
+
+.cms-facade__cta {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.cms-facade__action:hover .cms-facade__icon,
+.cms-facade__action:focus-visible .cms-facade__icon {
+  background: var(--color-dark);
+}
+
+.cms-facade__notice {
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8125rem;
+  /* Not dimmed: this sentence is the one that says a third party is about to
+     receive something about the visitor. */
+  color: var(--color-grey-darker);
+  background: var(--color-white);
+  border-top: 1px solid var(--color-grey-lighter);
+}
+
+.cms-facade__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.cms-facade--social .cms-facade__frame {
+  aspect-ratio: 3 / 4;
+}
+
+.cms-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cms-map__address {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cms-map__link {
+  margin: 0;
+  font-size: 0.9375rem;
+}
