@@ -4,7 +4,8 @@ generated on : {{ "now"|date("Y-m-d H:i:s") }}
 {% if _lang_ is defined and _lang_ != "" %}lang : {{ _lang_ }}{% endif %}
 {% if _context_ is defined and _context_ != "" %}context : {{ _context_ }}{% endif %}
 -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>{{ absolute_url(path('index')) }}</loc>
     </url>
@@ -96,4 +97,9 @@ generated on : {{ "now"|date("Y-m-d H:i:s") }}
             {% endfor %}
         {% endfor %}
     {% endif %}
+
+    {# Anything a module wants in the sitemap. It receives the language and the
+       context asked for, so a module can answer for one and keep quiet for the
+       others. #}
+    {{ theme_hook('sitemap.urls', { lang: _lang_|default(''), context: context }) }}
 </urlset>
