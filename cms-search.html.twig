@@ -1,0 +1,76 @@
+{# Search results.
+
+   Every label comes from the module already translated into the language the
+   visitor is reading the site in, which is not always the one Symfony resolved
+   for the request: on a multilingual site a `|trans` here would print the menu
+   in one language and the content in another. #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ labels.title }}{% endblock %}
+
+{# Results pages are worth crawling through, never worth indexing. #}
+{% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
+
+{% block body_class %}cms-search-page{% endblock %}
+
+{% block body %}
+    <twig:Layouts:Subheader:Base
+        title="{{ labels.title }}"
+        container="single-3"
+        :breadcrumb="[{title: labels.title}]"
+    />
+
+    <section class="cms-search container-single-3 mt-6 mb-20 lg:mt-14 lg:mb-30">
+        <form class="cms-search__form" method="get" action="" role="search">
+            <twig:Fields:Input:Base
+                id="cms-search-q"
+                name="q"
+                type="search"
+                label="{{ labels.prompt }}"
+                value="{{ query }}"
+                autocomplete="off"
+                required
+            />
+            <twig:Molecules:Button:Base type="submit" size="large" text="{{ labels.submit }}" />
+        </form>
+
+        {% if query is not empty and not searchable %}
+            <p class="cms-search__notice">{{ labels.too_short|replace({'%count%': min_word_length}) }}</p>
+        {% elseif searchable and total == 0 %}
+            <p class="cms-search__notice">{{ labels.no_result|replace({'%query%': query}) }}</p>
+        {% elseif searchable %}
+            {# Announced politely: somebody using a screen reader hears how many
+               results came back without having to go looking for the count. #}
+            <p class="cms-search__count" role="status">{{ labels.count|replace({'%count%': total}) }}</p>
+
+            <ol class="cms-search__results">
+                {% for result in results %}
+                    <li class="cms-search__result">
+                        {# A heading, not a bold link: a screen reader lists the
+                           results by walking the headings of the page. #}
+                        <h2 class="cms-search__result-title">
+                            <a class="cms-search__result-link" href="{{ result.url }}">{{ result.title }}</a>
+                        </h2>
+                        {% if result.excerpt %}
+                            <p class="cms-search__excerpt">{{ result.excerpt }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+
+            {% if last_page > 1 %}
+                <nav class="cms-search__pages" aria-label="{{ labels.pages }}">
+                    {% if page > 1 %}
+                        <a class="cms-search__page-link" rel="prev" href="?q={{ query|url_encode }}&amp;page={{ page - 1 }}">{{ labels.previous }}</a>
+                    {% endif %}
+
+                    <span class="cms-search__page-count">{{ labels.page_of|replace({'%page%': page, '%last%': last_page}) }}</span>
+
+                    {% if page < last_page %}
+                        <a class="cms-search__page-link" rel="next" href="?q={{ query|url_encode }}&amp;page={{ page + 1 }}">{{ labels.next }}</a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        {% endif %}
+    </section>
+{% endblock %}

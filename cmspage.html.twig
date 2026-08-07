@@ -1,0 +1,62 @@
+{# A page written in the CMS.
+
+   The module renders this file when it finds it at the root of the active
+   theme, and falls back on its own copy otherwise. Both emit the `cmspage.*`
+   theme hooks, which is what third-party modules attach to.
+
+   `cms_page.layout` decides the wrapper:
+
+   - default      the content in the reading column, under a subheader carrying
+                  the title and the breadcrumb;
+   - full-width   no column at all, for a page whose blocks handle their own
+                  width (a hero running edge to edge, a full-width gallery);
+   - landing      full width, and no header or footer, for a page that has to
+                  hold attention on one action. #}
+{% extends 'base.html.twig' %}
+
+{% set layout = cms_page.layout.value %}
+
+{% block title %}{{ cms_page.metaTitle|default(cms_page.title) }}{% endblock %}
+{% block meta_desc %}{{ cms_page.metaDescription|default('') }}{% endblock %}
+
+{% block robots %}
+    {% if cms_page.noindex or cms_page.nofollow %}
+        <meta name="robots" content="{{ cms_page.noindex ? 'noindex' : 'index' }}, {{ cms_page.nofollow ? 'nofollow' : 'follow' }}">
+    {% endif %}
+{% endblock %}
+
+{% block body_class %}cms-page cms-page--{{ layout }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# The CSS the editor produced for this page. Inline, because it belongs to
+       this page alone and a request for a second file would cost more than it
+       saves. #}
+    {% if cms_page.css is not empty %}
+        <style>{{ cms_page.css|raw }}</style>
+    {% endif %}
+{% endblock %}
+
+{# A landing page keeps the shell out of the way. #}
+{% block header %}{% if layout != 'landing' %}{{ parent() }}{% endif %}{% endblock %}
+{% block footer %}{% if layout != 'landing' %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block body %}
+    {{ theme_hook('cmspage.top', {page: cms_page}) }}
+
+    {# The breadcrumb, and deliberately no heading: the page carries its own
+       title inside the content the editor composed, and printing it again here
+       would give the page two `h1`, which is exactly what the heading check
+       warns about at publication. #}
+    {% if layout == 'default' %}
+        <twig:Molecules:Breadcrumb:Base :items="breadcrumb" class="container-single-3" />
+    {% endif %}
+
+    <article class="cms-page__content {{ layout == 'default' ? 'container-single-3 mt-6 mb-20 lg:mt-14 lg:mb-30' : '' }}">
+        {{ theme_hook('cmspage.content.before', {page: cms_page}) }}
+        {{ cms_page.html|raw }}
+        {{ theme_hook('cmspage.content.after', {page: cms_page}) }}
+    </article>
+
+    {{ theme_hook('cmspage.bottom', {page: cms_page}) }}
+{% endblock %}

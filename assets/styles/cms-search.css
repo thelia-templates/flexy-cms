@@ -1,0 +1,90 @@
+/* The search results page of the CMS module.
+
+   The module ships the markup with `cms-search-*` class names and no styling at
+   all, so everything the page looks like is decided here. */
+
+.cms-search__form {
+  display: flex;
+  flex-direction: column;
+  gap: --spacing(4);
+  margin-bottom: --spacing(8);
+}
+
+@variant md {
+  .cms-search__form {
+    /* The field and the button on one line, the button aligned on the input
+       rather than on the label above it. */
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .cms-search__form > *:first-child {
+    flex: 1 1 auto;
+  }
+}
+
+.cms-search__count,
+.cms-search__notice {
+  color: var(--color-grey);
+  margin-bottom: --spacing(6);
+}
+
+.cms-search__results {
+  display: flex;
+  flex-direction: column;
+  gap: --spacing(8);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cms-search__result {
+  padding-bottom: --spacing(8);
+  border-bottom: 1px solid var(--color-grey-lighter);
+}
+
+.cms-search__result:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cms-search__result-title {
+  margin: 0 0 --spacing(2);
+}
+
+.cms-search__result-link {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.cms-search__result-link:hover,
+.cms-search__result-link:focus-visible {
+  text-decoration: underline;
+}
+
+.cms-search__excerpt {
+  color: var(--color-grey);
+  margin: 0;
+}
+
+.cms-search__pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: --spacing(6);
+  margin-top: --spacing(10);
+}
+
+.cms-search__page-link {
+  color: var(--color-black);
+}
+
+.cms-search__page-count {
+  color: var(--color-grey);
+  font-size: var(--text-sm);
+}
