@@ -16,13 +16,18 @@
         />
     {% endif %}
 
-    <twig:Molecules:HeaderButton:Base
-        href="{{ path('checkout_cart') }}"
-        icon="cart"
-        color="dark"
-        class="HeaderNav-btn"
-        text="{{ 'Cart'|trans }}"
-    />
+    {# A showcase site answers 404 on its cart and its checkout, so linking to
+       them would put a dead link on every page. #}
+    {% if not cms_is_showcase() %}
+        <twig:Molecules:HeaderButton:Base
+            href="{{ path('checkout_cart') }}"
+            icon="cart"
+            color="dark"
+            class="HeaderNav-btn"
+            text="{{ 'Cart'|trans }}"
+        />
+    {% endif %}
+
     <twig:Molecules:HeaderButton:Base
         icon="menu"
         color="light"
